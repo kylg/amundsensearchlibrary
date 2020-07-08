@@ -1,4 +1,4 @@
-IMAGE := amundsendev/amundsen-search
+IMAGE := kylg/amundsen-search
 VERSION:= $(shell grep -m 1 '__version__' setup.py | cut -d '=' -f 2 | tr -d "'" | tr -d '[:space:]')
 
 .PHONY: test

@@ -12,7 +12,7 @@ setup(
     name='amundsen-search',
     version=__version__,
     description='Search Service for Amundsen',
-    url='https://github.com/lyft/amundsensearchlibrary.git',
+    url='https://github.com/kylg/amundsensearchlibrary.git',
     maintainer='Lyft',
     maintainer_email='dp-tools@lyft.com',
     packages=find_packages(exclude=['tests*']),

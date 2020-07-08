@@ -36,7 +36,7 @@ $ curl -v http://localhost:5001/healthcheck
 ## Instructions to start the Search service from source
 
 ```bash
-$ git clone https://github.com/lyft/amundsensearchlibrary.git
+$ git clone https://github.com/kylg/amundsensearchlibrary.git
 $ cd amundsensearchlibrary
 $ venv_path=[path_for_virtual_environment]
 $ python3 -m venv $venv_path
@@ -52,10 +52,10 @@ $ curl -v http://localhost:5001/healthcheck
 ## Instructions to start the service from Docker
 
 ```bash
-$ docker pull amundsendev/amundsen-search:latest
-$ docker run -p 5001:5001 amundsendev/amundsen-search
+$ docker pull kylg/amundsen-search:latest
+$ docker run -p 5001:5001 kylg/amundsen-search
 # - alternative, for production environment with Gunicorn (see its homepage link below)
-$ ## docker run -p 5001:5001 amundsendev/amundsen-search gunicorn --bind 0.0.0.0:5001 search_service.search_wsgi
+$ ## docker run -p 5001:5001 kylg/amundsen-search gunicorn --bind 0.0.0.0:5001 search_service.search_wsgi
 
 # In a different terminal, verify the service is up by running
 $ curl -v http://localhost:5001/healthcheck
@@ -75,8 +75,8 @@ $ curl -v http://localhost:8000/healthcheck
 For more imformation see the [Gunicorn configuration documentation](https://docs.gunicorn.org/en/latest/run.html "documentation").
 
 ### Configuration outside local environment
-By default, Search service uses [LocalConfig](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/config.py "LocalConfig") that looks for Elasticsearch running in localhost.
-In order to use different end point, you need to create a [Config](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/config.py "Config") suitable for your use case. Once a config class has been created, it can be referenced by an [environment variable](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/search_wsgi.py "environment variable"): `SEARCH_SVC_CONFIG_MODULE_CLASS`
+By default, Search service uses [LocalConfig](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/config.py "LocalConfig") that looks for Elasticsearch running in localhost.
+In order to use different end point, you need to create a [Config](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/config.py "Config") suitable for your use case. Once a config class has been created, it can be referenced by an [environment variable](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/search_wsgi.py "environment variable"): `SEARCH_SVC_CONFIG_MODULE_CLASS`
 
 For example, in order to have different config for production, you can inherit Config class, create Production config and passing production config class into environment variable. Let's say class name is ProdConfig and it's in search_service.config module. then you can set as below:
 
@@ -97,24 +97,24 @@ Currently the documentation only works with local configuration.
 ## Code structure
 Amundsen Search service consists of three packages, API, Models, and Proxy.
 
-### [API package](https://github.com/lyft/amundsensearchlibrary/tree/master/search_service/api "API package")
+### [API package](https://github.com/kylg/amundsensearchlibrary/tree/master/search_service/api "API package")
 A package that contains [Flask Restful resources](https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Resource "Flask Restful resources") that serves Restful API request.
-The [routing of API](https://flask-restful.readthedocs.io/en/latest/quickstart.html#resourceful-routing "routing of API") is being registered [here](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/__init__.py "here").
+The [routing of API](https://flask-restful.readthedocs.io/en/latest/quickstart.html#resourceful-routing "routing of API") is being registered [here](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/__init__.py "here").
 
-### [Proxy package](https://github.com/lyft/amundsensearchlibrary/tree/master/search_service/proxy "Proxy package")
-Proxy package contains proxy modules that talks dependencies of Search service. There are currently two modules in Proxy package, [Elasticsearch](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/proxy/elasticsearch.py "Elasticsearch") and [Statsd](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/proxy/statsd_utilities.py "Statsd").
+### [Proxy package](https://github.com/kylg/amundsensearchlibrary/tree/master/search_service/proxy "Proxy package")
+Proxy package contains proxy modules that talks dependencies of Search service. There are currently two modules in Proxy package, [Elasticsearch](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/proxy/elasticsearch.py "Elasticsearch") and [Statsd](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/proxy/statsd_utilities.py "Statsd").
 
-##### [Elasticsearch proxy module](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/proxy/elasticsearch.py "Elasticsearch proxy module")
-[Elasticsearch](https://www.elastic.co/products/elasticsearch "Elasticsearch") proxy module serves various use case of searching metadata from Elasticsearch. It uses [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html "Query DSL") for the use case, execute the search query and transform into [model](https://github.com/lyft/amundsensearchlibrary/tree/master/search_service/models "model").
+##### [Elasticsearch proxy module](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/proxy/elasticsearch.py "Elasticsearch proxy module")
+[Elasticsearch](https://www.elastic.co/products/elasticsearch "Elasticsearch") proxy module serves various use case of searching metadata from Elasticsearch. It uses [Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html "Query DSL") for the use case, execute the search query and transform into [model](https://github.com/kylg/amundsensearchlibrary/tree/master/search_service/models "model").
 
-##### [Atlas proxy module](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/proxy/atlas.py "Atlas proxy module") 
+##### [Atlas proxy module](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/proxy/atlas.py "Atlas proxy module") 
 [Apache Atlas](https://atlas.apache.org/ "Apache Atlas") proxy module uses Atlas to serve the Atlas requests. At the moment the Basic Search REST API is used via the [Python Client](https://atlasclient.readthedocs.io/ "Atlas Client"). 
 
 
-##### [Statsd utilities module](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/proxy/statsd_utilities.py "Statsd utilities module")
-[Statsd](https://github.com/etsy/statsd/wiki "Statsd") utilities module has methods / functions to support statsd to publish metrics. By default, statsd integration is disabled and you can turn in on from [Search service configuration](https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/config.py#L7 "Search service configuration").
+##### [Statsd utilities module](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/proxy/statsd_utilities.py "Statsd utilities module")
+[Statsd](https://github.com/etsy/statsd/wiki "Statsd") utilities module has methods / functions to support statsd to publish metrics. By default, statsd integration is disabled and you can turn in on from [Search service configuration](https://github.com/kylg/amundsensearchlibrary/blob/master/search_service/config.py#L7 "Search service configuration").
 For specific configuration related to statsd, you can configure it through [environment variable.](https://statsd.readthedocs.io/en/latest/configure.html#from-the-environment "environment variable.")
 
-### [Models package](https://github.com/lyft/amundsensearchlibrary/tree/master/search_service/models "Models package")
+### [Models package](https://github.com/kylg/amundsensearchlibrary/tree/master/search_service/models "Models package")
 Models package contains many modules where each module has many Python classes in it. These Python classes are being used as a schema and a data holder. All data exchange within Amundsen Search service use classes in Models to ensure validity of itself and improve readability and maintainability.
 
