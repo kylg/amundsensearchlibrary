@@ -1,3 +1,6 @@
+# Copyright Contributors to the Amundsen project.
+# SPDX-License-Identifier: Apache-2.0
+
 import os
 
 from setuptools import setup, find_packages
@@ -13,8 +16,8 @@ setup(
     version=__version__,
     description='Search Service for Amundsen',
     url='https://github.com/kylg/amundsensearchlibrary.git',
-    maintainer='Lyft',
-    maintainer_email='dp-tools@lyft.com',
+    maintainer='kylg',
+    maintainer_email='info@kylg.org',
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     zip_safe=False,
