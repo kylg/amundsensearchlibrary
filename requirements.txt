@@ -1,4 +1,4 @@
-amundsencommon-azure>=0.3.6,<1.0
+amundsencommon-azure>=0.3.8,<1.0
 aniso8601==3.0.0
 pyatlasclient==1.0.3
 click==6.7
